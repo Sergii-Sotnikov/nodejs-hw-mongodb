@@ -13,7 +13,7 @@ export const getContactById = async (contactId) => {
 };
 
 //POST CONTACT SERVICE
-export const createStudent = async (payload) => {
+export const createContact = async (payload) => {
   const contact = await ContactsCollection.create(payload);
   return contact;
 };
@@ -27,8 +27,8 @@ export const deleteContact = async (contactId) => {
   return contact;
 };
 
-//PUT CONTACT SERVICE
-export const updateContact = async (contactId, payload, options = {}) => {
+//PATCH CONTACT SERVICE
+export const patchContact = async (contactId, payload, options = {}) => {
   const rawResult = await ContactsCollection.findOneAndUpdate(
     { _id: contactId },
     payload,
