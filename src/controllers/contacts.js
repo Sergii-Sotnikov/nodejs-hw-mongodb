@@ -6,15 +6,32 @@ import {
   patchContact,
 } from '../services/contacts.js';
 import createHttpError from 'http-errors';
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
+import { parseFilterParams } from '../utils/parseFilterParams.js';
 
 // GET ALL CONTACT CONTROLLER
 export const getAllContactsController = async (req, res) => {
-  const contacts = await getAllContacts();
+  const { page, perPage } = parsePaginationParams(req.query);
+  const { sortBy, sortOrder } = parseSortParams(req.query);
+  const filter = parseFilterParams(req.query);
 
-  res.status(200).json({
+  if ('isFavourite' in req.query && filter.isFavourite === 'invalid') {
+    throw createHttpError(400, 'isFavourite must be boolean (true or false)');
+  }
+
+  const students = await getAllContacts({
+    page,
+    perPage,
+    sortBy,
+    sortOrder,
+    filter,
+  });
+
+  res.json({
     status: 200,
     message: 'Successfully found contacts!',
-    data: contacts,
+    data: students,
   });
 };
 
@@ -34,8 +51,6 @@ export const getContactByIdController = async (req, res) => {
     data: contact,
   });
 };
-
-
 
 //POST CONTACT CONTROLLER
 export const createContactController = async (req, res) => {
