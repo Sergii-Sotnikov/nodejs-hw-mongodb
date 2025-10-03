@@ -1,5 +1,6 @@
 import Joi from 'joi';
 
+
 export const createContactSchema = Joi.object({
     name: Joi.string().trim().min(3).max(20).required().messages({
     'string.base': 'Username should be a string',
@@ -38,7 +39,7 @@ export const createContactSchema = Joi.object({
     .messages({
       'any.only': 'contactType must be one of: work, home, personal',
       'any.required': 'contactType is required',
-    }),
+    })
 })
 
 
