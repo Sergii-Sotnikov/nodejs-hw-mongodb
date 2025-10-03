@@ -15,4 +15,5 @@ export const errorHandler = (err, req, res, next) => {
     message: 'Something went wrong!!!',
     data: err.message,
   });
+  next();
 };
