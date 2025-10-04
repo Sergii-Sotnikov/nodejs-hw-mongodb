@@ -41,8 +41,9 @@ const [contactsCount, contacts] = await Promise.all([
 
 
 //GET CONTACT BY ID SERVICE
-export const getContactById = async (contactId) => {
-  const contact = await ContactsCollection.findById(contactId);
+export const getContactById = async (contactId, userId) => {
+
+  const contact = await ContactsCollection.findOne({_id:contactId, userId: userId});
   return contact;
 };
 
@@ -53,25 +54,28 @@ export const createContact = async (payload) => {
 };
 
 //DELETE CONTACT SERVICE
-export const deleteContact = async (contactId) => {
+export const deleteContact = async (contactId, userId) => {
   const contact = await ContactsCollection.findOneAndDelete({
     _id: contactId,
+    userId: userId,
   });
 
   return contact;
 };
 
 //PATCH CONTACT SERVICE
-export const patchContact = async (contactId, payload, options = {}) => {
+export const patchContact = async (contactId, userId, payload, options = {}) => {
   const rawResult = await ContactsCollection.findOneAndUpdate(
-    { _id: contactId },
+    { _id: contactId,
+      userId: userId,
+     },
     payload,
     {
       new: true,
       includeResultMetadata: true,
       ...options,
     },
-  );
+  ); 
 
   if (!rawResult || !rawResult.value) return null;
 
