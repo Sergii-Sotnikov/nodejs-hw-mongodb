@@ -15,7 +15,6 @@ import handlebars from 'handlebars';
 
 
 
-
 export const registerUser = async (payload) => {
   const user = await UsersCollection.findOne({ email: payload.email });
   if (user) throw createHttpError(409, 'Email in use');
