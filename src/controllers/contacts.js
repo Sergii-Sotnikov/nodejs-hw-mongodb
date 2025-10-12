@@ -57,9 +57,24 @@ export const getContactByIdController = async (req, res) => {
   });
 };
 
-//POST CONTACT CONTROLLER
+
 export const createContactController = async (req, res) => {
-  const contact = await createContact({ ...req.body, userId: req.user._id });
+  const photo = req.file;
+  let photoUrl;
+  if (photo) {
+    if (getEnvVar('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+  }
+  const payload = {
+    ...req.body,
+    userId: req.user._id,
+    photo: photoUrl,
+  };
+
+  const contact = await createContact(payload);
 
   res.status(201).json({
     status: 201,
@@ -80,14 +95,13 @@ export const deleteContactController = async (req, res) => {
   res.status(204).send();
 };
 
-
 //PATCH CONTACT CONTROLLER
 export const patchContactController = async (req, res) => {
   const { contactId } = req.params;
   const photo = req.file;
   let photoUrl;
-  
-    if (photo) {
+
+  if (photo) {
     if (getEnvVar('ENABLE_CLOUDINARY') === 'true') {
       photoUrl = await saveFileToCloudinary(photo);
     } else {
@@ -98,7 +112,7 @@ export const patchContactController = async (req, res) => {
     ...req.body,
     photo: photoUrl,
   });
-  
+
   if (!result) {
     throw createHttpError(404, 'Contact not found');
   }

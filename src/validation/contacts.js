@@ -78,5 +78,5 @@ export const updateContactSchema = Joi.object({
     .messages({
       'any.only': 'contactType must be one of: work, home, personal',
       'any.required': 'contactType is required',
-    }),
+    })
 })
