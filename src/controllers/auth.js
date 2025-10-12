@@ -26,7 +26,6 @@ export const loginUserController = async (req, res) => {
     expires: session.accessTokenValidUntil,
   });
 
-
   res.json({
     status: 200,
     message: 'Successfully logged in an user!',
