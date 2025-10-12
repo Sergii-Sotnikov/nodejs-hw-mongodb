@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
 import { FIFTEEN_MINUTES, TEMPLATES_DIR, THIRTY_DAYS } from '../contacts/sortIndex.js';
 import { SessionsCollection } from '../db/models/session.js';
-import { SMTP } from '../contacts/sortIndex.js';
+// import { SMTP } from '../contacts/sortIndex.js';
 import { getEnvVar } from '../utils/getEnvVar.js';
 import { sendEmail } from '../utils/sendMail.js';
 import jwt from 'jsonwebtoken';
@@ -120,7 +120,7 @@ export const requestResetToken = async (email) => {
     },
     getEnvVar('JWT_SECRET'),
     {
-      expiresIn: '1m',
+      expiresIn: '5m',
     },
   );
 
@@ -140,7 +140,7 @@ export const requestResetToken = async (email) => {
   });
 
   try{await sendEmail({
-    from: getEnvVar(SMTP.SMTP_FROM),
+    // from: getEnvVar(SMTP.SMTP_FROM),
     to: email,
     subject: 'Reset your password',
     html,
