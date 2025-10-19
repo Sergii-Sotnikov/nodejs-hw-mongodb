@@ -35,3 +35,5 @@ export const API_BREVO = {
   API_BREVO_FROM: 'API_BREVO_FROM',
   API_BREVO_KEY: 'API_BREVO_KEY',
 };
+
+export const SWAGGER_PATH = path.join(process.cwd(), 'docs', 'swagger.json');
